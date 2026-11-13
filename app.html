@@ -914,11 +914,8 @@
     if (state.library.length === 0) { alert('没有可上传的词库！'); return; }
     var active = activeLib();
     if (!active) return;
-    if (GITHUB_TOKEN.indexOf('ghp_') === -1) { alert('请先在代码中配置正确的 GITHUB_TOKEN！'); return; }
     if (!window.confirm('确定要把当前选中的词库（' + active.name + '）覆盖上传到云端吗？')) return;
-
-    var apiUrl = 'https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/contents/' + GITHUB_FILE_PATH;
-    
+    var apiUrl = 'https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/contents/' + GITHUB_FILE_PATH;   
     // 先获取 SHA
     fetch(apiUrl, { headers: { 'Authorization': 'token ' + GITHUB_TOKEN } })
     .then(function(res) {
