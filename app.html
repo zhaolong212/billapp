@@ -344,8 +344,12 @@
       <button class="btn-primary" id="btnUseSelected">使用选中的单词表</button>
       
       <div class="btn-row" style="margin-top:12px; gap:10px;">
-        <button class="btn-secondary" id="btnUploadCloud" style="background:#e6f4ea;color:#137333;flex:1;">⬆️ 上传到云端</button>
-        <button class="btn-secondary" id="btnSyncCloud" style="background:#e8f0fe;color:#1a73e8;flex:1;">☁️ 从云端更新</button>
+        <button class="btn-secondary" id="btnUploadCloud" style="background:#e6f4ea;color:#137333;flex:1;">⬆️ 上传全部词库</button>
+        <button class="btn-secondary" id="btnSyncCloud" style="background:#e8f0fe;color:#1a73e8;flex:1;">☁️ 同步云端词库</button>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-secondary btn-small" id="btnSetToken" style="background:#fff3e0;color:#e65100;">⚙️ 设置云端 Token</button>
       </div>
 
       <div class="btn-row">
@@ -516,7 +520,7 @@
   var MIGRATED_KEY = 'word_quiz_id_migrated_v1';
   var WEAK_MIN_WEIGHT = 0.05;
 
-  // ⚠️ 云端同步配置区（不要在这里写 Token 了）
+  // ⚠️ 云端同步配置区
   var GITHUB_OWNER = 'zhaolong212'; 
   var GITHUB_REPO = 'billapp'; 
   var GITHUB_FILE_PATH = 'words.json';
@@ -904,70 +908,80 @@
     renderHome();
   });
 
-  // ================== 云端数据库同步 ==================
+  // ================== 云端多词库同步 ==================
   function uploadToCloud() {
     if (state.library.length === 0) { alert('没有可上传的词库！'); return; }
-    var active = activeLib();
-    if (!active) return;
 
-    // 从本地缓存获取 Token
     var currentToken = localStorage.getItem('my_github_token');
-    
-    // 如果没有，弹窗让用户输入
     if (!currentToken) {
-      currentToken = prompt('首次使用，请输入你的 GitHub Token：\n(输入后自动保存在本机，无需重复输入)');
-      if (!currentToken) return;
-      localStorage.setItem('my_github_token', currentToken.trim());
+      alert('请先点击下方的【⚙️ 设置云端 Token】按钮配置权限。');
+      return;
     }
 
-    if (!window.confirm('确定要把当前选中的词库（' + active.name + '）覆盖上传到云端吗？')) return;
+    if (!window.confirm('确定要把你手机上的【全部课程词库】覆盖上传到云端吗？')) return;
 
     var apiUrl = 'https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/contents/' + GITHUB_FILE_PATH;
     
-    // 先获取文件 SHA
     fetch(apiUrl, { headers: { 'Authorization': 'token ' + currentToken } })
     .then(function(res) {
       if (res.status === 404) return null; 
       if (res.ok) return res.json();
-      // 如果 Token 错了，清除本地缓存，下次重填
       if (res.status === 401) { 
-        localStorage.removeItem('my_github_token'); 
-        throw new Error('Token 无效或已过期，请重试并输入正确的 Token'); 
+        throw new Error('Token 无效或已过期，请点击【⚙️ 设置云端 Token】重新配置。'); 
       }
-      throw new Error('获取云端状态失败，HTTP状态码: ' + res.status);
+      throw new Error('获取云端状态失败，状态码: ' + res.status);
     }).then(function(data) {
       var sha = data ? data.sha : null;
-      var content = JSON.stringify(active.words, null, 2);
+      // 打包整个词库列表
+      var payload = { version: 2, library: state.library };
+      var content = JSON.stringify(payload, null, 2);
       var base64Content = btoa(unescape(encodeURIComponent(content)));
       
       return fetch(apiUrl, {
         method: 'PUT',
         headers: { 'Authorization': 'token ' + currentToken, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: 'Update words', content: base64Content, sha: sha || undefined })
+        body: JSON.stringify({ message: 'Update all libraries', content: base64Content, sha: sha || undefined })
       });
     }).then(function(res) {
-      if (res.ok) alert('✅ 上传成功！');
-      else alert('❌ 上传失败，请检查 Token 权限。HTTP状态码: ' + res.status);
+      if (res.ok) alert('✅ 全部词库上传成功！');
+      else alert('❌ 上传失败，状态码: ' + res.status);
     }).catch(function(err) { alert('❌ 发生错误：' + err.message); });
   }
 
   function syncFromCloud() {
-    if (state.library.length === 0) { alert('请先在本地创建词库！'); return; }
-    var active = activeLib();
-    if (!active) return;
-    if (!window.confirm('确定要从云端同步最新词汇吗？\n将更新本地词库，但保留历史错误记录。')) return;
+    if (!window.confirm('确定要从云端同步最新词汇吗？\n这将覆盖你本地所有的课程，但会保留历史答题记录。')) return;
 
     var rawUrl = 'https://raw.githubusercontent.com/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/main/' + GITHUB_FILE_PATH;
     fetch(rawUrl + '?t=' + Date.now())
       .then(function(res) {
-        if (!res.ok) throw new Error('云端文件不存在');
+        if (!res.ok) throw new Error('云端数据不存在或网络错误，请确保已成功上传过。');
         return res.json();
-      }).then(function(cloudWords) {
-        if (!Array.isArray(cloudWords) || cloudWords.length === 0) throw new Error('格式错误');
-        active.words = cloudWords;
-        active.createdAt = Date.now();
+      }).then(function(data) {
+        var cloudLibs = [];
+        if (Array.isArray(data)) {
+          // 兼容旧版单库格式
+          var active = activeLib();
+          if (active) {
+            cloudLibs.push({ id: active.id, name: active.name, words: data });
+          }
+        } else if (data && Array.isArray(data.library)) {
+          cloudLibs = data.library;
+        } else {
+          throw new Error('云端数据格式不正确');
+        }
+        
+        // 更新本地词库
+        state.library = cloudLibs.map(function(lib) {
+          return { id: makeLibId(lib.name), name: lib.name, words: lib.words, createdAt: lib.createdAt || Date.now() };
+        });
+        
         saveLibrary();
-        alert('✅ 同步成功！更新了 ' + cloudWords.length + ' 个单词。');
+        if (state.library.length > 0) {
+          if (!findLib(state.activeLibId)) state.activeLibId = state.library[0].id;
+        } else {
+          state.activeLibId = null;
+        }
+        alert('✅ 同步成功！当前共有 ' + state.library.length + ' 份词库。');
         renderSavedPage();
       }).catch(function(err) { alert('❌ 同步失败：' + err.message); });
   }
@@ -1098,6 +1112,16 @@
 
   $('btnSavedBack').addEventListener('click', function () { hideInlineBoxes(); renderHome(); });
   $('btnUseSelected').addEventListener('click', function () { if (!activeLib()) { alert('请先选择'); return; } hideInlineBoxes(); renderHome(); });
+  
+  $('btnSetToken').addEventListener('click', function () {
+    var current = localStorage.getItem('my_github_token') || '';
+    var t = prompt('请输入你的 GitHub Token（输入后保存在本机）：', current);
+    if (t !== null) {
+      localStorage.setItem('my_github_token', t.trim());
+      alert('✅ Token 已保存！');
+    }
+  });
+
   $('btnUploadCloud').addEventListener('click', uploadToCloud);
   $('btnSyncCloud').addEventListener('click', syncFromCloud);
 
