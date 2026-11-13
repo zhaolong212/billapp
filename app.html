@@ -276,13 +276,13 @@
 
     <div class="card">
       <div class="hint" id="inputHint">
-        每行一个单词，<b>中文在前，英文在后</b>；或<b>两行一组</b>：上一行纯中文，下一行纯英文。<br>
+        每行一个单词，<b>左侧中文，右侧英文</b>。中间用空格或冒号隔开。<br>
         示例：<br>
         <code>苹果 apple</code><br>
-        <code>是(are 的过去式)</code><br>
-        <code>were</code>
+        <code>是(are 的过去式) were</code><br>
+        <code>冰淇淋: ice cream</code>
       </div>
-      <textarea id="wordInput" placeholder="苹果 apple&#10;是(are 的过去式)&#10;were&#10;香蕉 banana"></textarea>
+      <textarea id="wordInput" placeholder="苹果 apple&#10;是(are 的过去式) were&#10;香蕉 banana"></textarea>
       <button class="btn-primary" id="btnPreview" style="margin-top:12px;">先预览解析结果</button>
       <button class="btn-primary" id="btnSaveNew" style="margin-top:8px;">保存这份单词表</button>
       <button class="btn-secondary hidden" id="btnSaveCorrection" style="margin-top:8px;">保存修正结果</button>
@@ -308,19 +308,6 @@
     <div class="nav-bar">
       <button class="back-btn" id="btnSavedBack">‹ 返回</button>
       <div class="nav-title">选择已保存的单词表</div>
-    </div>
-
-    <div class="card">
-      <!-- 纯网页输入框设置 Token -->
-      <div style="font-weight:600;margin-bottom:8px;color:#e65100;">⚙️ 云端配置</div>
-      <div class="hint" style="margin-top:0;">在此输入你的 GitHub Token（只需填一次，保存在本地）。上传词库必须填，下载词库无需填。</div>
-      <input type="text" id="tokenInput" style="width:100%; padding:10px; border:1px solid #d8dbe0; border-radius:8px; font-family:monospace; margin-bottom:8px;" placeholder="ghp_... 或 github_pat_...">
-      <button class="btn-secondary" id="btnSaveToken" style="padding:8px; font-size:14px; margin-top:0;">保存 Token</button>
-
-      <div class="btn-row" style="margin-top:16px; gap:10px;">
-        <button class="btn-primary" id="btnUploadCloud" style="background:#e6f4ea;color:#137333;flex:1;">⬆️ 上传全部词库</button>
-        <button class="btn-primary" id="btnSyncCloud" style="background:#e8f0fe;color:#1a73e8;flex:1;">☁️ 下载全部词库</button>
-      </div>
     </div>
 
     <div class="card">
@@ -356,6 +343,11 @@
     <div class="card" id="savedActionsCard">
       <button class="btn-primary" id="btnUseSelected">使用选中的单词表</button>
       
+      <div class="btn-row" style="margin-top:12px; gap:10px;">
+        <button class="btn-secondary" id="btnUploadCloud" style="background:#e6f4ea;color:#137333;flex:1;">⬆️ 上传全部词库</button>
+        <button class="btn-secondary" id="btnSyncCloud" style="background:#e8f0fe;color:#1a73e8;flex:1;">☁️ 下载全部词库</button>
+      </div>
+
       <div class="btn-row">
         <button class="btn-secondary btn-small" id="btnCorrect">修正单词表</button>
         <button class="btn-secondary btn-small" id="btnRename">重命名</button>
@@ -735,54 +727,33 @@
 
   // ---------- 解析 ----------
   var CJK_RE = /[\u4e00-\u9fff\u3400-\u4dbf]/;
-  var LATIN_RE = /[A-Za-z]/;
   function hasCJK(s) { return CJK_RE.test(s); }
-  function hasLatin(s) { return LATIN_RE.test(s); }
-  function countCJK(s) { var n = 0; for (var i = 0; i < s.length; i++) if (CJK_RE.test(s[i])) n++; return n; }
-  function countLatin(s) { var n = 0; for (var i = 0; i < s.length; i++) if (LATIN_RE.test(s[i])) n++; return n; }
-  function isPureEnglishLine(line) { return hasLatin(line) && !hasCJK(line); }
-  function isMainlyChineseLine(line) { if (!hasCJK(line)) return false; return countCJK(line) >= countLatin(line); }
-  function splitZhThenEn(line) {
-    var end = line.length;
-    while (end > 0 && /\s/.test(line[end - 1])) end--;
-    var startEn = end;
-    while (startEn > 0 && LATIN_RE.test(line[startEn - 1])) startEn--;
-    if (startEn >= end) return null;
-    var enPart = line.slice(startEn, end).trim();
-    var zhPart = line.slice(0, startEn).trim();
-    zhPart = zhPart.replace(/[\s,，;；:：、\t\-—=]+$/, '').trim();
-    if (!enPart || !zhPart) return null;
-    if (!hasLatin(enPart)) return null;
-    if (!hasCJK(zhPart)) return null;
-    return { zh: zhPart, en: enPart };
-  }
+  
+  // 左侧中文，右侧纯英文（支持空格、连字符、冒号等分隔）
   function parseWords(text) {
     var lines = text.split(/\r?\n/).map(function (l) { return l.trim(); }).filter(Boolean);
     var result = [];
     var seen = {};
-    var i = 0;
-    while (i < lines.length) {
+
+    for (var i = 0; i < lines.length; i++) {
       var line = lines[i];
-      if (isMainlyChineseLine(line) && i + 1 < lines.length && isPureEnglishLine(lines[i + 1])) {
-        addWord(result, seen, lines[i + 1], line); i += 2; continue;
+      var match = line.match(/^(.*?)([a-zA-Z\s\-']+)$/);
+      if (match) {
+        var zhPart = match[1].trim();
+        var enPart = match[2].trim();
+        
+        zhPart = zhPart.replace(/[\s,，;；:：、\t\-—=]+$/, '').trim();
+        
+        if (zhPart && enPart && hasCJK(zhPart)) {
+          var key = enPart.toLowerCase();
+          if (!seen[key]) {
+            seen[key] = true;
+            result.push({ en: enPart, zh: zhPart });
+          }
+        }
       }
-      if (isMainlyChineseLine(line) && hasLatin(line)) {
-        var pair = splitZhThenEn(line);
-        if (pair) { addWord(result, seen, pair.en, pair.zh); i++; continue; }
-      }
-      i++;
     }
     return result;
-  }
-  function addWord(result, seen, en, zh) {
-    en = String(en || '').trim(); zh = String(zh || '').trim();
-    if (!en || !zh) return;
-    if (!hasLatin(en)) return;
-    if (!hasCJK(zh)) return;
-    var key = en.toLowerCase();
-    if (seen[key]) return;
-    seen[key] = true;
-    result.push({ en: en, zh: zh });
   }
 
   // ---------- 工具 ----------
@@ -916,10 +887,14 @@
     if (state.library.length === 0) { alert('没有可上传的词库！'); return; }
 
     var currentToken = localStorage.getItem('my_github_token');
+    
     if (!currentToken) {
-      alert('请先在上方【云端配置】的输入框里填入 Token 并保存。');
-      return;
+      currentToken = prompt('首次上传，请输入你的 GitHub Token：\n(输入后自动保存在本机)');
+      if (!currentToken) return;
+      localStorage.setItem('my_github_token', currentToken.trim());
     }
+
+    if (!window.confirm('确定要把你手机上的【全部课程词库】覆盖上传到云端吗？')) return;
 
     var apiUrl = 'https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/contents/' + GITHUB_FILE_PATH;
     
@@ -928,7 +903,8 @@
       if (res.status === 404) return null; 
       if (res.ok) return res.json();
       if (res.status === 401) { 
-        throw new Error('Token 无效或已过期，请重新配置。'); 
+        localStorage.removeItem('my_github_token');
+        throw new Error('Token 无效或已过期，请重新点击上传并输入正确的 Token。'); 
       }
       throw new Error('获取云端状态失败，状态码: ' + res.status);
     }).then(function(data) {
@@ -949,6 +925,8 @@
   }
 
   function syncFromCloud() {
+    if (!window.confirm('确定要从云端同步最新词汇吗？\n将覆盖本地所有课程，但保留历史答题记录。')) return;
+
     var rawUrl = 'https://raw.githubusercontent.com/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/main/' + GITHUB_FILE_PATH;
     fetch(rawUrl + '?t=' + Date.now())
       .then(function(res) {
@@ -1017,7 +995,6 @@
   });
   $('entrySaved').addEventListener('click', function () { 
     hideInlineBoxes(); 
-    $('tokenInput').value = localStorage.getItem('my_github_token') || '';
     renderSavedPage(); 
     showView(viewSaved); 
   });
@@ -1036,7 +1013,22 @@
   });
 
   // ---------- 录入 / 修正 ----------
-  $('btnInputBack').addEventListener('click', function () { state.editingLibId = null; $('nameBox').classList.add('hidden'); state.pendingWords = null; renderHome(); });
+  $('btnInputBack').addEventListener('click', function () { 
+    var isEditing = !!state.editingLibId; // 提前记录是否是修正模式
+    state.editingLibId = null; 
+    $('nameBox').classList.add('hidden'); 
+    state.pendingWords = null; 
+    
+    if (isEditing) {
+      // 如果是修正模式，返回二级页面（已保存列表）
+      hideInlineBoxes();
+      renderSavedPage();
+      showView(viewSaved);
+    } else {
+      // 如果是新建模式，返回一级页面（首页）
+      renderHome();
+    }
+  });
 
   function renderPreview(words) {
     var card = $('previewCard'), info = $('previewInfo'), list = $('previewList');
@@ -1087,7 +1079,12 @@
     var validKeys = {}; parsed.forEach(function (w) { validKeys[w.en.toLowerCase()] = true; });
     Object.keys(map).forEach(function (k) { if (!validKeys[k]) delete map[k]; });
     all[libId] = map; state.weights = all; saveJSON(WEIGHT_KEY, all); saveLibrary();
-    state.editingLibId = null; renderHome();
+    
+    // 保存成功后，返回二级页面（已保存列表）
+    state.editingLibId = null; 
+    hideInlineBoxes();
+    renderSavedPage();
+    showView(viewSaved);
   });
 
   // ---------- 已保存列表 ----------
@@ -1112,12 +1109,6 @@
   $('btnSavedBack').addEventListener('click', function () { hideInlineBoxes(); renderHome(); });
   $('btnUseSelected').addEventListener('click', function () { if (!activeLib()) { alert('请先选择'); return; } hideInlineBoxes(); renderHome(); });
   
-  $('btnSaveToken').addEventListener('click', function () {
-    var t = $('tokenInput').value.trim();
-    localStorage.setItem('my_github_token', t);
-    alert('✅ Token 已保存到本地！');
-  });
-
   $('btnUploadCloud').addEventListener('click', uploadToCloud);
   $('btnSyncCloud').addEventListener('click', syncFromCloud);
 
