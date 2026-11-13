@@ -1,118 +1,517 @@
-[
-  {
-    "en": "get to school",
-    "zh": "到达学校"
-  },
-  {
-    "en": "do my homework",
-    "zh": "做我的作业"
-  },
-  {
-    "en": "be late",
-    "zh": "迟到"
-  },
-  {
-    "en": "in class",
-    "zh": "在上课"
-  },
-  {
-    "en": "on time",
-    "zh": "准时，按时"
-  },
-  {
-    "en": "for an hour a day",
-    "zh": "每天一小时"
-  },
-  {
-    "en": "play sports with",
-    "zh": "和..做运动"
-  },
-  {
-    "en": "learn Beijing opera",
-    "zh": "学习京剧"
-  },
-  {
-    "en": "listen carefully",
-    "zh": "认真听讲"
-  },
-  {
-    "en": "healthy and strong",
-    "zh": "健康又强壮"
-  },
-  {
-    "en": "twice a day",
-    "zh": "一天两次"
-  },
-  {
-    "en": "after school",
-    "zh": "放学"
-  },
-  {
-    "en": "have breakfast",
-    "zh": "吃早饭"
-  },
-  {
-    "en": "once a week",
-    "zh": "一周一次"
-  },
-  {
-    "en": "need to do sth",
-    "zh": "需要做某事"
-  },
-  {
-    "en": "eat vegetables and fruit",
-    "zh": "吃蔬菜水果"
-  },
-  {
-    "en": "walk to school",
-    "zh": "步行去上学"
-  },
-  {
-    "en": "do more exercise",
-    "zh": "多做运动"
-  },
-  {
-    "en": "get up late",
-    "zh": "起床晚"
-  },
-  {
-    "en": "walk home",
-    "zh": "步行回家"
-  },
-  {
-    "en": "every morning",
-    "zh": "每天早晨"
-  },
-  {
-    "en": "stay up late",
-    "zh": "熬夜"
-  },
-  {
-    "en": "make a plan",
-    "zh": "制定计划"
-  },
-  {
-    "en": "get up & wash up",
-    "zh": "起床洗漱"
-  },
-  {
-    "en": "the next morning",
-    "zh": "第二天早晨"
-  },
-  {
-    "en": "go back home",
-    "zh": "回家"
-  },
-  {
-    "en": "eat / have breakfast",
-    "zh": "吃早饭"
-  },
-  {
-    "en": "go to school",
-    "zh": "去上学"
-  },
-  {
-    "en": "the top goalkeeper",
-    "zh": "顶尖的守门员"
-  }
-]
+{
+  "version": 2,
+  "library": [
+    {
+      "id": "lib_39345172",
+      "name": "第一部分",
+      "words": [
+        {
+          "en": "get to school",
+          "zh": "到达学校"
+        },
+        {
+          "en": "do my homework",
+          "zh": "做我的作业"
+        },
+        {
+          "en": "be late",
+          "zh": "迟到"
+        },
+        {
+          "en": "in class",
+          "zh": "在上课"
+        },
+        {
+          "en": "on time",
+          "zh": "准时，按时"
+        },
+        {
+          "en": "for an hour a day",
+          "zh": "每天一小时"
+        },
+        {
+          "en": "play sports with",
+          "zh": "和..做运动"
+        },
+        {
+          "en": "learn Beijing opera",
+          "zh": "学习京剧"
+        },
+        {
+          "en": "listen carefully",
+          "zh": "认真听讲"
+        },
+        {
+          "en": "healthy and strong",
+          "zh": "健康又强壮"
+        },
+        {
+          "en": "twice a day",
+          "zh": "一天两次"
+        },
+        {
+          "en": "after school",
+          "zh": "放学"
+        },
+        {
+          "en": "have breakfast",
+          "zh": "吃早饭"
+        },
+        {
+          "en": "once a week",
+          "zh": "一周一次"
+        },
+        {
+          "en": "need to do sth",
+          "zh": "需要做某事"
+        },
+        {
+          "en": "eat vegetables and fruit",
+          "zh": "吃蔬菜水果"
+        },
+        {
+          "en": "walk to school",
+          "zh": "步行去上学"
+        },
+        {
+          "en": "do more exercise",
+          "zh": "多做运动"
+        },
+        {
+          "en": "get up late",
+          "zh": "起床晚"
+        },
+        {
+          "en": "walk home",
+          "zh": "步行回家"
+        },
+        {
+          "en": "every morning",
+          "zh": "每天早晨"
+        },
+        {
+          "en": "stay up late",
+          "zh": "熬夜"
+        },
+        {
+          "en": "make a plan",
+          "zh": "制定计划"
+        },
+        {
+          "en": "get up & wash up",
+          "zh": "起床洗漱"
+        },
+        {
+          "en": "the next morning",
+          "zh": "第二天早晨"
+        },
+        {
+          "en": "go back home",
+          "zh": "回家"
+        },
+        {
+          "en": "eat / have breakfast",
+          "zh": "吃早饭"
+        },
+        {
+          "en": "go to school",
+          "zh": "去上学"
+        },
+        {
+          "en": "the top goalkeeper",
+          "zh": "顶尖的守门员"
+        }
+      ],
+      "createdAt": 1794575259359
+    },
+    {
+      "id": "lib_39365efe",
+      "name": "第二部分",
+      "words": [
+        {
+          "en": "sleep time",
+          "zh": "睡觉时间"
+        },
+        {
+          "en": "It's time to do sth",
+          "zh": "到做某事的时间了"
+        },
+        {
+          "en": "feel sleepy",
+          "zh": "感到困倦"
+        },
+        {
+          "en": "want to change",
+          "zh": "想要改变"
+        },
+        {
+          "en": "wash up",
+          "zh": "洗澡"
+        },
+        {
+          "en": "put ... on the wall",
+          "zh": "把...贴到墙上"
+        },
+        {
+          "en": "go to bed",
+          "zh": "上床睡觉"
+        },
+        {
+          "en": "read books",
+          "zh": "读书"
+        },
+        {
+          "en": "dinner time",
+          "zh": "晚餐时间"
+        },
+        {
+          "en": "school time",
+          "zh": "上学时间"
+        },
+        {
+          "en": "watch a children's show",
+          "zh": "看儿童节目"
+        },
+        {
+          "en": "play with my sister",
+          "zh": "和妹妹玩耍"
+        },
+        {
+          "en": "get up",
+          "zh": "起床"
+        },
+        {
+          "en": "play sports",
+          "zh": "做运动"
+        },
+        {
+          "en": "walk to school",
+          "zh": "步行去上学"
+        },
+        {
+          "en": "never late",
+          "zh": "从不迟到"
+        },
+        {
+          "en": "on Monday and Wednesday",
+          "zh": "在周一和周三"
+        },
+        {
+          "en": "do homework",
+          "zh": "做作业"
+        },
+        {
+          "en": "water flowers",
+          "zh": "浇花"
+        },
+        {
+          "en": "wash dishes",
+          "zh": "洗碗"
+        },
+        {
+          "en": "three times a week",
+          "zh": "一周三次"
+        },
+        {
+          "en": "go to bed early",
+          "zh": "早睡"
+        },
+        {
+          "en": "help out at home",
+          "zh": "在家帮忙"
+        },
+        {
+          "en": "how often",
+          "zh": "多久一次"
+        },
+        {
+          "en": "play football",
+          "zh": "踢足球"
+        },
+        {
+          "en": "never exercise",
+          "zh": "从不锻炼"
+        },
+        {
+          "en": "just a robot",
+          "zh": "只是一个机器人"
+        },
+        {
+          "en": "exercise every day",
+          "zh": "每天锻炼"
+        },
+        {
+          "en": "play basketball",
+          "zh": "打篮球"
+        },
+        {
+          "en": "have a good time",
+          "zh": "玩得开心"
+        }
+      ],
+      "createdAt": 1794575395215
+    },
+    {
+      "id": "lib_3934733b",
+      "name": "第三部分",
+      "words": [
+        {
+          "en": "be good for you",
+          "zh": "对你有好处"
+        },
+        {
+          "en": "don't need exercise",
+          "zh": "不需要锻炼"
+        },
+        {
+          "en": "come up",
+          "zh": "到来"
+        },
+        {
+          "en": "sack race",
+          "zh": "袋鼠跳"
+        },
+        {
+          "en": "three-legged race",
+          "zh": "两人三足赛"
+        },
+        {
+          "en": "be good at jumping",
+          "zh": "擅长跳跃"
+        },
+        {
+          "en": "skip rope",
+          "zh": "跳绳"
+        },
+        {
+          "en": "sports meet",
+          "zh": "运动会"
+        },
+        {
+          "en": "sports games",
+          "zh": "运动"
+        },
+        {
+          "en": "after school",
+          "zh": "放学后"
+        },
+        {
+          "en": "It's time for",
+          "zh": "到...时间了"
+        },
+        {
+          "en": "safety gear",
+          "zh": "安全护具"
+        },
+        {
+          "en": "next time",
+          "zh": "下次"
+        },
+        {
+          "en": "tie your shoe",
+          "zh": "系好你的鞋"
+        },
+        {
+          "en": "put on",
+          "zh": "穿上，戴上"
+        },
+        {
+          "en": "keep you safe",
+          "zh": "保护你的安全"
+        },
+        {
+          "en": "have a boat race",
+          "zh": "举行划船比赛"
+        },
+        {
+          "en": "play ping-pong",
+          "zh": "乒乓球"
+        },
+        {
+          "en": "light the fire",
+          "zh": "点燃圣火"
+        },
+        {
+          "en": "shake hands with",
+          "zh": "和...握手"
+        },
+        {
+          "en": "give up",
+          "zh": "放弃"
+        },
+        {
+          "en": "at last",
+          "zh": "最后"
+        },
+        {
+          "en": "be interested in / be good at",
+          "zh": "对...感兴趣"
+        },
+        {
+          "en": "be good at boxing",
+          "zh": "擅长拳击"
+        },
+        {
+          "en": "take part in",
+          "zh": "参加"
+        },
+        {
+          "en": "sports clothes",
+          "zh": "运动服"
+        },
+        {
+          "en": "try their best",
+          "zh": "奋力比赛"
+        },
+        {
+          "en": "play their best",
+          "zh": "尽他们最大努力"
+        },
+        {
+          "en": "roller skating",
+          "zh": "滑旱冰"
+        },
+        {
+          "en": "on the playground",
+          "zh": "在操场上"
+        },
+        {
+          "en": "watch a football game",
+          "zh": "看足球比赛"
+        }
+      ],
+      "createdAt": 1794575424085
+    },
+    {
+      "id": "lib_39558f8d",
+      "name": "第四部分",
+      "words": [
+        {
+          "en": "be good for you",
+          "zh": "对你有好处"
+        },
+        {
+          "en": "don't need exercise",
+          "zh": "不需要锻炼"
+        },
+        {
+          "en": "come up",
+          "zh": "到来"
+        },
+        {
+          "en": "sack race",
+          "zh": "袋鼠跳"
+        },
+        {
+          "en": "three-legged race",
+          "zh": "两人三足赛"
+        },
+        {
+          "en": "be good at jumping",
+          "zh": "擅长跳跃"
+        },
+        {
+          "en": "skip rope",
+          "zh": "跳绳"
+        },
+        {
+          "en": "sports meet",
+          "zh": "运动会"
+        },
+        {
+          "en": "sports games",
+          "zh": "运动"
+        },
+        {
+          "en": "after school",
+          "zh": "放学后"
+        },
+        {
+          "en": "It's time for",
+          "zh": "到...时间了"
+        },
+        {
+          "en": "safety gear",
+          "zh": "安全护具"
+        },
+        {
+          "en": "next time",
+          "zh": "下次"
+        },
+        {
+          "en": "tie your shoe",
+          "zh": "系好你的鞋"
+        },
+        {
+          "en": "put on",
+          "zh": "穿上，戴上"
+        },
+        {
+          "en": "keep you safe",
+          "zh": "保护你的安全"
+        },
+        {
+          "en": "have a boat race",
+          "zh": "举行划船比赛"
+        },
+        {
+          "en": "play ping-pong",
+          "zh": "乒乓球"
+        },
+        {
+          "en": "light the fire",
+          "zh": "点燃圣火"
+        },
+        {
+          "en": "shake hands with",
+          "zh": "和...握手"
+        },
+        {
+          "en": "give up",
+          "zh": "放弃"
+        },
+        {
+          "en": "at last",
+          "zh": "最后"
+        },
+        {
+          "en": "be interested in / be good at",
+          "zh": "对...感兴趣"
+        },
+        {
+          "en": "be good at boxing",
+          "zh": "擅长拳击"
+        },
+        {
+          "en": "take part in",
+          "zh": "参加"
+        },
+        {
+          "en": "sports clothes",
+          "zh": "运动服"
+        },
+        {
+          "en": "try their best",
+          "zh": "奋力比赛"
+        },
+        {
+          "en": "play their best",
+          "zh": "尽他们最大努力"
+        },
+        {
+          "en": "roller skating",
+          "zh": "滑旱冰"
+        },
+        {
+          "en": "on the playground",
+          "zh": "在操场上"
+        },
+        {
+          "en": "watch a football game",
+          "zh": "看足球比赛"
+        }
+      ],
+      "createdAt": 1794574320158
+    }
+  ]
+}
