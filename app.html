@@ -311,6 +311,19 @@
     </div>
 
     <div class="card">
+      <!-- 纯网页输入框设置 Token -->
+      <div style="font-weight:600;margin-bottom:8px;color:#e65100;">⚙️ 云端配置</div>
+      <div class="hint" style="margin-top:0;">在此输入你的 GitHub Token（只需填一次，保存在本地）。上传词库必须填，下载词库无需填。</div>
+      <input type="text" id="tokenInput" style="width:100%; padding:10px; border:1px solid #d8dbe0; border-radius:8px; font-family:monospace; margin-bottom:8px;" placeholder="ghp_... 或 github_pat_...">
+      <button class="btn-secondary" id="btnSaveToken" style="padding:8px; font-size:14px; margin-top:0;">保存 Token</button>
+
+      <div class="btn-row" style="margin-top:16px; gap:10px;">
+        <button class="btn-primary" id="btnUploadCloud" style="background:#e6f4ea;color:#137333;flex:1;">⬆️ 上传全部词库</button>
+        <button class="btn-primary" id="btnSyncCloud" style="background:#e8f0fe;color:#1a73e8;flex:1;">☁️ 下载全部词库</button>
+      </div>
+    </div>
+
+    <div class="card">
       <div id="savedListEmpty" class="hint" style="margin:0;">还没有保存过单词表。请先到“录入新单词表”里保存一份。</div>
       <div id="savedListArea"></div>
 
@@ -343,15 +356,6 @@
     <div class="card" id="savedActionsCard">
       <button class="btn-primary" id="btnUseSelected">使用选中的单词表</button>
       
-      <div class="btn-row" style="margin-top:12px; gap:10px;">
-        <button class="btn-secondary" id="btnUploadCloud" style="background:#e6f4ea;color:#137333;flex:1;">⬆️ 上传全部词库</button>
-        <button class="btn-secondary" id="btnSyncCloud" style="background:#e8f0fe;color:#1a73e8;flex:1;">☁️ 同步云端词库</button>
-      </div>
-
-      <div class="btn-row">
-        <button class="btn-secondary btn-small" id="btnSetToken" style="background:#fff3e0;color:#e65100;">⚙️ 设置云端 Token</button>
-      </div>
-
       <div class="btn-row">
         <button class="btn-secondary btn-small" id="btnCorrect">修正单词表</button>
         <button class="btn-secondary btn-small" id="btnRename">重命名</button>
@@ -520,7 +524,6 @@
   var MIGRATED_KEY = 'word_quiz_id_migrated_v1';
   var WEAK_MIN_WEIGHT = 0.05;
 
-  // ⚠️ 云端同步配置区
   var GITHUB_OWNER = 'zhaolong212'; 
   var GITHUB_REPO = 'billapp'; 
   var GITHUB_FILE_PATH = 'words.json';
@@ -914,11 +917,9 @@
 
     var currentToken = localStorage.getItem('my_github_token');
     if (!currentToken) {
-      alert('请先点击下方的【⚙️ 设置云端 Token】按钮配置权限。');
+      alert('请先在上方【云端配置】的输入框里填入 Token 并保存。');
       return;
     }
-
-    if (!window.confirm('确定要把你手机上的【全部课程词库】覆盖上传到云端吗？')) return;
 
     var apiUrl = 'https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/contents/' + GITHUB_FILE_PATH;
     
@@ -927,12 +928,11 @@
       if (res.status === 404) return null; 
       if (res.ok) return res.json();
       if (res.status === 401) { 
-        throw new Error('Token 无效或已过期，请点击【⚙️ 设置云端 Token】重新配置。'); 
+        throw new Error('Token 无效或已过期，请重新配置。'); 
       }
       throw new Error('获取云端状态失败，状态码: ' + res.status);
     }).then(function(data) {
       var sha = data ? data.sha : null;
-      // 打包整个词库列表
       var payload = { version: 2, library: state.library };
       var content = JSON.stringify(payload, null, 2);
       var base64Content = btoa(unescape(encodeURIComponent(content)));
@@ -949,8 +949,6 @@
   }
 
   function syncFromCloud() {
-    if (!window.confirm('确定要从云端同步最新词汇吗？\n这将覆盖你本地所有的课程，但会保留历史答题记录。')) return;
-
     var rawUrl = 'https://raw.githubusercontent.com/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/main/' + GITHUB_FILE_PATH;
     fetch(rawUrl + '?t=' + Date.now())
       .then(function(res) {
@@ -959,18 +957,14 @@
       }).then(function(data) {
         var cloudLibs = [];
         if (Array.isArray(data)) {
-          // 兼容旧版单库格式
           var active = activeLib();
-          if (active) {
-            cloudLibs.push({ id: active.id, name: active.name, words: data });
-          }
+          if (active) cloudLibs.push({ id: active.id, name: active.name, words: data });
         } else if (data && Array.isArray(data.library)) {
           cloudLibs = data.library;
         } else {
           throw new Error('云端数据格式不正确');
         }
         
-        // 更新本地词库
         state.library = cloudLibs.map(function(lib) {
           return { id: makeLibId(lib.name), name: lib.name, words: lib.words, createdAt: lib.createdAt || Date.now() };
         });
@@ -1021,7 +1015,12 @@
     state.pendingWords = null;
     showView(viewInput);
   });
-  $('entrySaved').addEventListener('click', function () { hideInlineBoxes(); renderSavedPage(); showView(viewSaved); });
+  $('entrySaved').addEventListener('click', function () { 
+    hideInlineBoxes(); 
+    $('tokenInput').value = localStorage.getItem('my_github_token') || '';
+    renderSavedPage(); 
+    showView(viewSaved); 
+  });
   $('entryWeak').addEventListener('click', function () {
     if (!activeLib()) { alert('请先选择一份单词表'); return; }
     renderWeakPage(); showView(viewWeak);
@@ -1113,13 +1112,10 @@
   $('btnSavedBack').addEventListener('click', function () { hideInlineBoxes(); renderHome(); });
   $('btnUseSelected').addEventListener('click', function () { if (!activeLib()) { alert('请先选择'); return; } hideInlineBoxes(); renderHome(); });
   
-  $('btnSetToken').addEventListener('click', function () {
-    var current = localStorage.getItem('my_github_token') || '';
-    var t = prompt('请输入你的 GitHub Token（输入后保存在本机）：', current);
-    if (t !== null) {
-      localStorage.setItem('my_github_token', t.trim());
-      alert('✅ Token 已保存！');
-    }
+  $('btnSaveToken').addEventListener('click', function () {
+    var t = $('tokenInput').value.trim();
+    localStorage.setItem('my_github_token', t);
+    alert('✅ Token 已保存到本地！');
   });
 
   $('btnUploadCloud').addEventListener('click', uploadToCloud);
