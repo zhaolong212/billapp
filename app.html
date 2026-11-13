@@ -910,18 +910,21 @@
   });
 
   // ================== 云端数据库同步 ==================
-  function uploadToCloud() {
+    function uploadToCloud() {
     if (state.library.length === 0) { alert('没有可上传的词库！'); return; }
     var active = activeLib();
     if (!active) return;
     if (!window.confirm('确定要把当前选中的词库（' + active.name + '）覆盖上传到云端吗？')) return;
-    var apiUrl = 'https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/contents/' + GITHUB_FILE_PATH;   
-    // 先获取 SHA
+
+    var apiUrl = 'https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/contents/' + GITHUB_FILE_PATH;
+    
+    // 先获取文件 SHA
     fetch(apiUrl, { headers: { 'Authorization': 'token ' + GITHUB_TOKEN } })
     .then(function(res) {
-      if (res.ok) return res.json();
+      // ✅ 修复点：如果返回 404，说明文件不存在，视为正常情况，直接返回 null 让后续代码创建文件
       if (res.status === 404) return null; 
-      throw new Error('获取云端状态失败');
+      if (res.ok) return res.json();
+      throw new Error('获取云端状态失败，HTTP状态码: ' + res.status);
     }).then(function(data) {
       var sha = data ? data.sha : null;
       var content = JSON.stringify(active.words, null, 2);
@@ -934,10 +937,9 @@
       });
     }).then(function(res) {
       if (res.ok) alert('✅ 上传成功！');
-      else alert('❌ 上传失败，请检查 Token。');
+      else alert('❌ 上传失败，请检查 Token 权限。HTTP状态码: ' + res.status);
     }).catch(function(err) { alert('❌ 发生错误：' + err.message); });
   }
-
   function syncFromCloud() {
     if (state.library.length === 0) { alert('请先在本地创建词库！'); return; }
     var active = activeLib();
