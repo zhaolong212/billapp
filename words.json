@@ -344,8 +344,8 @@
           "zh": "最后"
         },
         {
-          "en": "be interested in / be good at",
-          "zh": "对...感兴趣"
+          "en": "be good at",
+          "zh": "对...感兴趣\tbe interested in /"
         },
         {
           "en": "be good at boxing",
@@ -380,138 +380,114 @@
           "zh": "看足球比赛"
         }
       ],
-      "createdAt": 1794575424085
+      "createdAt": 1794578012045
     },
     {
       "id": "lib_39558f8d",
       "name": "第四部分",
       "words": [
         {
-          "en": "be good for you",
-          "zh": "对你有好处"
+          "en": "keep our balance",
+          "zh": "保持平衡"
         },
         {
-          "en": "don't need exercise",
-          "zh": "不需要锻炼"
+          "en": "safety tips",
+          "zh": "安全小贴士"
         },
         {
-          "en": "come up",
-          "zh": "到来"
+          "en": "right away",
+          "zh": "立刻，马上"
         },
         {
-          "en": "sack race",
-          "zh": "袋鼠跳"
+          "en": "stay away from others",
+          "zh": "远离别人"
         },
         {
-          "en": "three-legged race",
-          "zh": "两人三足赛"
+          "en": "warm up",
+          "zh": "热身"
         },
         {
-          "en": "be good at jumping",
-          "zh": "擅长跳跃"
+          "en": "be careful",
+          "zh": "小心"
         },
         {
-          "en": "skip rope",
-          "zh": "跳绳"
+          "en": "walk around slowly",
+          "zh": "慢慢走动"
         },
         {
-          "en": "sports meet",
-          "zh": "运动会"
-        },
-        {
-          "en": "sports games",
-          "zh": "运动"
-        },
-        {
-          "en": "after school",
-          "zh": "放学后"
-        },
-        {
-          "en": "It's time for",
-          "zh": "到...时间了"
-        },
-        {
-          "en": "safety gear",
-          "zh": "安全护具"
-        },
-        {
-          "en": "next time",
-          "zh": "下次"
-        },
-        {
-          "en": "tie your shoe",
-          "zh": "系好你的鞋"
-        },
-        {
-          "en": "put on",
-          "zh": "穿上，戴上"
-        },
-        {
-          "en": "keep you safe",
-          "zh": "保护你的安全"
-        },
-        {
-          "en": "have a boat race",
-          "zh": "举行划船比赛"
-        },
-        {
-          "en": "play ping-pong",
-          "zh": "乒乓球"
-        },
-        {
-          "en": "light the fire",
-          "zh": "点燃圣火"
-        },
-        {
-          "en": "shake hands with",
-          "zh": "和...握手"
-        },
-        {
-          "en": "give up",
-          "zh": "放弃"
-        },
-        {
-          "en": "at last",
-          "zh": "最后"
-        },
-        {
-          "en": "be interested in / be good at",
-          "zh": "对...感兴趣"
-        },
-        {
-          "en": "be good at boxing",
-          "zh": "擅长拳击"
+          "en": "take a cold shower",
+          "zh": "洗冷水澡"
         },
         {
           "en": "take part in",
           "zh": "参加"
         },
         {
-          "en": "sports clothes",
-          "zh": "运动服"
+          "en": "at last",
+          "zh": "最后"
         },
         {
-          "en": "try their best",
-          "zh": "奋力比赛"
+          "en": "want to do sth",
+          "zh": "想做某事"
         },
         {
-          "en": "play their best",
-          "zh": "尽他们最大努力"
+          "en": "science club",
+          "zh": "科学俱乐部"
         },
         {
-          "en": "roller skating",
-          "zh": "滑旱冰"
+          "en": "sports club",
+          "zh": "运动俱乐部"
         },
         {
-          "en": "on the playground",
-          "zh": "在操场上"
+          "en": "kung fu club",
+          "zh": "功夫俱乐部"
         },
         {
-          "en": "watch a football game",
-          "zh": "看足球比赛"
+          "en": "football club",
+          "zh": "足球俱乐部"
+        },
+        {
+          "en": "drama club",
+          "zh": "戏剧俱乐部"
+        },
+        {
+          "en": "cut out",
+          "zh": "（从纸片上）剪裁出"
+        },
+        {
+          "en": "put on a play",
+          "zh": "表演戏剧"
+        },
+        {
+          "en": "be interested in doing sth",
+          "zh": "对...感兴趣"
+        },
+        {
+          "en": "paper-cut club",
+          "zh": "剪纸俱乐部"
+        },
+        {
+          "en": "football fan",
+          "zh": "足球迷"
+        },
+        {
+          "en": "jump in the air",
+          "zh": "跳在空中"
+        },
+        {
+          "en": "take many shots",
+          "zh": "多次射门"
+        },
+        {
+          "en": "make an amazing save",
+          "zh": "做出精彩扑救"
+        },
+        {
+          "en": "try as their goalkeeper",
+          "zh": "尝试当他们的守门员"
         }
       ],
-      "createdAt": 1794574320158
+      "createdAt": 1794578032888
     }
   ]
 }
