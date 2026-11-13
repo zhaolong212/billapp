@@ -343,7 +343,6 @@
     <div class="card" id="savedActionsCard">
       <button class="btn-primary" id="btnUseSelected">使用选中的单词表</button>
       
-      <!-- 云端同步按钮 -->
       <div class="btn-row" style="margin-top:12px; gap:10px;">
         <button class="btn-secondary" id="btnUploadCloud" style="background:#e6f4ea;color:#137333;flex:1;">⬆️ 上传到云端</button>
         <button class="btn-secondary" id="btnSyncCloud" style="background:#e8f0fe;color:#1a73e8;flex:1;">☁️ 从云端更新</button>
@@ -517,11 +516,7 @@
   var MIGRATED_KEY = 'word_quiz_id_migrated_v1';
   var WEAK_MIN_WEIGHT = 0.05;
 
-  // ⚠️ 云端同步配置区 ⚠️
-  // 1. 填入你的 GitHub Token（开头是 ghp_ 的那串，建议生成永不过期的）
-  // 2. 填你的 GitHub 用户名
-  // 3. 填你的仓库名
-  var GITHUB_TOKEN = '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'; 
+  // ⚠️ 云端同步配置区（不要在这里写 Token 了）
   var GITHUB_OWNER = 'zhaolong212'; 
   var GITHUB_REPO = 'billapp'; 
   var GITHUB_FILE_PATH = 'words.json';
@@ -910,20 +905,35 @@
   });
 
   // ================== 云端数据库同步 ==================
-    function uploadToCloud() {
+  function uploadToCloud() {
     if (state.library.length === 0) { alert('没有可上传的词库！'); return; }
     var active = activeLib();
     if (!active) return;
+
+    // 从本地缓存获取 Token
+    var currentToken = localStorage.getItem('my_github_token');
+    
+    // 如果没有，弹窗让用户输入
+    if (!currentToken) {
+      currentToken = prompt('首次使用，请输入你的 GitHub Token：\n(输入后自动保存在本机，无需重复输入)');
+      if (!currentToken) return;
+      localStorage.setItem('my_github_token', currentToken.trim());
+    }
+
     if (!window.confirm('确定要把当前选中的词库（' + active.name + '）覆盖上传到云端吗？')) return;
 
     var apiUrl = 'https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/contents/' + GITHUB_FILE_PATH;
     
     // 先获取文件 SHA
-    fetch(apiUrl, { headers: { 'Authorization': 'token ' + GITHUB_TOKEN } })
+    fetch(apiUrl, { headers: { 'Authorization': 'token ' + currentToken } })
     .then(function(res) {
-      // ✅ 修复点：如果返回 404，说明文件不存在，视为正常情况，直接返回 null 让后续代码创建文件
       if (res.status === 404) return null; 
       if (res.ok) return res.json();
+      // 如果 Token 错了，清除本地缓存，下次重填
+      if (res.status === 401) { 
+        localStorage.removeItem('my_github_token'); 
+        throw new Error('Token 无效或已过期，请重试并输入正确的 Token'); 
+      }
       throw new Error('获取云端状态失败，HTTP状态码: ' + res.status);
     }).then(function(data) {
       var sha = data ? data.sha : null;
@@ -932,7 +942,7 @@
       
       return fetch(apiUrl, {
         method: 'PUT',
-        headers: { 'Authorization': 'token ' + GITHUB_TOKEN, 'Content-Type': 'application/json' },
+        headers: { 'Authorization': 'token ' + currentToken, 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: 'Update words', content: base64Content, sha: sha || undefined })
       });
     }).then(function(res) {
@@ -940,6 +950,7 @@
       else alert('❌ 上传失败，请检查 Token 权限。HTTP状态码: ' + res.status);
     }).catch(function(err) { alert('❌ 发生错误：' + err.message); });
   }
+
   function syncFromCloud() {
     if (state.library.length === 0) { alert('请先在本地创建词库！'); return; }
     var active = activeLib();
