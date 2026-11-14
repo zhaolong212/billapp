@@ -830,7 +830,7 @@
         },
         {
           "en": "more",
-          "zh": "many的比较级"
+          "zh": "many/much的比较级"
         },
         {
           "en": "less",
@@ -885,7 +885,7 @@
           "zh": "slim的比较级"
         }
       ],
-      "createdAt": 1794639673883
+      "createdAt": 1794639703819
     }
   ]
 }
