@@ -837,12 +837,8 @@
           "zh": "little的比较级"
         },
         {
-          "en": "farther",
-          "zh": "far的比较级"
-        },
-        {
           "en": "further",
-          "zh": "farther的比较级"
+          "zh": "far的比较级 farther/"
         },
         {
           "en": "bigger",
@@ -885,7 +881,7 @@
           "zh": "slim的比较级"
         }
       ],
-      "createdAt": 1794639703819
+      "createdAt": 1794639944965
     }
   ]
 }
