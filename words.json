@@ -847,9 +847,49 @@
         {
           "en": "further",
           "zh": "farther的比较级"
+        },
+        {
+          "en": "bigger",
+          "zh": "big的比较级"
+        },
+        {
+          "en": "hotter",
+          "zh": "hot的比较级"
+        },
+        {
+          "en": "thinner",
+          "zh": "thin的比较级"
+        },
+        {
+          "en": "fatter",
+          "zh": "fat的比较级"
+        },
+        {
+          "en": "sadder",
+          "zh": "sad的比较级"
+        },
+        {
+          "en": "wetter",
+          "zh": "wet的比较级"
+        },
+        {
+          "en": "redder",
+          "zh": "red的比较级"
+        },
+        {
+          "en": "fitter",
+          "zh": "fit的比较级"
+        },
+        {
+          "en": "madder",
+          "zh": "mad的比较级"
+        },
+        {
+          "en": "slimmer",
+          "zh": "slim的比较级"
         }
       ],
-      "createdAt": 1794635100949
+      "createdAt": 1794639217037
     }
   ]
 }
