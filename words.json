@@ -815,6 +815,41 @@
         }
       ],
       "createdAt": 1794579572344
+    },
+    {
+      "id": "lib_115b3082",
+      "name": "形容词比较级",
+      "words": [
+        {
+          "en": "better",
+          "zh": "good的比较级"
+        },
+        {
+          "en": "worse",
+          "zh": "bad的比较级"
+        },
+        {
+          "en": "much",
+          "zh": "many的比较级"
+        },
+        {
+          "en": "more",
+          "zh": "much的比较级"
+        },
+        {
+          "en": "less",
+          "zh": "little的比较级"
+        },
+        {
+          "en": "farther",
+          "zh": "far的比较级"
+        },
+        {
+          "en": "further",
+          "zh": "farther的比较级"
+        }
+      ],
+      "createdAt": 1794635100949
     }
   ]
 }
